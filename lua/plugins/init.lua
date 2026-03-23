@@ -5,7 +5,33 @@ return {
     opts = require "configs.conform",
   },
 
-  -- These are some examples, uncomment them if you want to see them work!
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+
+      local wanted = {
+        "python",
+        "c",
+        "cpp",
+        "rust",
+        "javascript",
+        "typescript",
+        "lua",
+        "vim",
+        "vimdoc",
+      }
+
+      for _, lang in ipairs(wanted) do
+        if not vim.tbl_contains(opts.ensure_installed, lang) then
+          table.insert(opts.ensure_installed, lang)
+        end
+      end
+
+      return opts
+    end,
+  },
+
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -15,14 +41,4 @@ return {
 
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
-
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
 }
